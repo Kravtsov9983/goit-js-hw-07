@@ -1,8 +1,5 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
 
-// console.log(galleryItems);
-const galleryLab = galleryItems
 function createDiv(array) {
     return array.reduce((acc, item) => acc + `<div class="gallery__item">
   <a class="gallery__link" href="${item.original}">
@@ -17,13 +14,25 @@ function createDiv(array) {
 }
 
 const div = document.querySelector(".gallery")
-div.insertAdjacentHTML("beforeend", createDiv(galleryLab) )
+div.insertAdjacentHTML("beforeend", createDiv(galleryItems) )
+
+div.addEventListener("click", divHendler)
 
 function divHendler(e) {
     e.preventDefault()
-    const description = e.target.dataset.source;
-    console.log(description)
+  const description = e.target.dataset.source;
+    const modal = basicLightbox.create(
+    `<img src = "${description}" width="800" height="600">`,
+    {
+      onShow: () => window.addEventListener(`keydown`, onPressKeyESC),
+      onClose: () => window.removeEventListener(`keydown`, onPressKeyESC)
+    }
+  )
+  modal.show();
+  
+  function onPressKeyESC(e) {
+    if (e.code === `Escape`) {
+      modal.close();
+    }
+  }
 }
-
-
-div.addEventListener("click", divHendler)
